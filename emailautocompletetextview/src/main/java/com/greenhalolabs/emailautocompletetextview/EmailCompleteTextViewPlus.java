@@ -10,7 +10,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+
+import com.greenhalolabs.emailautocompletetextview.util.AccountUtil;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,7 +28,9 @@ import android.widget.AutoCompleteTextView;
  * empty so that the view can easily be cleared.
  * </p>
  */
-public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements View.OnTouchListener, View.OnFocusChangeListener {
+public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
+                                                                   View.OnTouchListener,
+                                                                   View.OnFocusChangeListener {
 
     private static final String TAG = EmailCompleteTextViewPlus.class.getName();
 
@@ -46,7 +53,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements V
 
     public EmailCompleteTextViewPlus(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context);
     }
 
     /* Public Methods */
@@ -55,8 +62,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements V
         mOnTouchListener = l;
     }
 
-    @Override
-    public void setOnFocusChangeListener(OnFocusChangeListener l) {
+    @Override public void setOnFocusChangeListener(OnFocusChangeListener l) {
         mOnFocusChangeListener = l;
     }
 
@@ -94,21 +100,33 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements V
 
     /* Private Methods */
 
-    private void init() {
+    private void init(Context context) {
+
+        // Set clear button
         mTappableDrawable = getCompoundDrawables()[2]; // Right drawable
         if (mTappableDrawable != null) {
-            mTappableDrawable.setBounds(0, 0, mTappableDrawable.getIntrinsicWidth(), mTappableDrawable.getIntrinsicHeight());
+            mTappableDrawable.setBounds(0,
+                                        0,
+                                        mTappableDrawable.getIntrinsicWidth(),
+                                        mTappableDrawable.getIntrinsicHeight());
             addTextChangedListener(new DefaultTextChangedListener(this));
             setOnClearClickListener(new DefaultOnButtonClickListener(this));
             super.setOnFocusChangeListener(this);
             super.setOnTouchListener(this);
         }
+
+        // Get e-mails
+        final List<String> emailsList = AccountUtil.getAccountEmails(context);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                                                                      android.R.layout.simple_dropdown_item_1line,
+                                                                      emailsList);
+        setAdapter(adapter);
+        setClearVisible(false);
     }
 
     /* Implemented Methods */
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
+    @Override public void onFocusChange(View v, boolean hasFocus) {
 
         final EmailCompleteTextViewPlus editText = (EmailCompleteTextViewPlus) v;
         editText.setClearVisible((hasFocus && !TextUtils.isEmpty(editText.getText().toString())));

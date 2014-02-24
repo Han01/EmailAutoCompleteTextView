@@ -1,1 +1,1 @@
-include ':emailautocompletetextview'
+include ':emailautocompletetextview', ':example'
