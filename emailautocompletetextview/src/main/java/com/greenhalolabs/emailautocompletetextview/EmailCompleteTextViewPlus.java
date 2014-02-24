@@ -34,6 +34,8 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     private static final String TAG = EmailCompleteTextViewPlus.class.getName();
 
+    private static final int DEFAULT_CLEAR_BUTTON = R.drawable.close;
+
     /* Private State */
 
     private Drawable mTappableDrawable;
@@ -102,10 +104,15 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     /* Private Methods */
 
+    private Drawable getDefaultClearButton(Context context) {
+        return context.getResources().getDrawable(DEFAULT_CLEAR_BUTTON);
+    }
+
     private void init(Context context) {
 
         // Set clear button
-        mTappableDrawable = getCompoundDrawables()[2]; // Right drawable
+        final Drawable[] drawables = getCompoundDrawables();
+        mTappableDrawable = ((drawables != null && drawables[2] != null) ? drawables[2] : getDefaultClearButton(context));
         if (mTappableDrawable != null) {
             mTappableDrawable.setBounds(0,
                                         0,
