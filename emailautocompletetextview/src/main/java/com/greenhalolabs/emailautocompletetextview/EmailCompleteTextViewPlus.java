@@ -6,9 +6,9 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" 
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language 
- * governing permissions and limitations under the License. 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS"
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  */
 
 package com.greenhalolabs.emailautocompletetextview;
@@ -84,7 +84,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     /**
      * Sets a listener for when the clear button is clicked.
-     * 
+     *
      * @param listener the listener.
      */
     public void setOnClearClickListener(OnClearClicked listener) {
@@ -93,7 +93,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     /**
      * Sets the visibility of the clear button.
-     * 
+     *
      * @param visible true if the clear button should be visible, otherwise, false.
      */
     public void setClearVisible(boolean visible) {
@@ -204,7 +204,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
         }
 
         @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-            editTextPlus.setClearVisible(!TextUtils.isEmpty(editTextPlus.getText().toString()));
+            editTextPlus.setClearVisible(editTextPlus.hasFocus() && !TextUtils.isEmpty(editTextPlus.getText().toString()));
         }
 
         @Override public void afterTextChanged(Editable s) {
