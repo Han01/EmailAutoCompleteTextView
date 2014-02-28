@@ -40,11 +40,11 @@ import java.util.List;
  * empty so that the view can easily be cleared.
  * </p>
  */
-public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
+public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
                                                                    View.OnTouchListener,
                                                                    View.OnFocusChangeListener {
 
-    private static final String TAG = EmailCompleteTextViewPlus.class.getName();
+    private static final String TAG = EmailAutoCompleteTextView.class.getName();
 
     private static final int DEFAULT_CLEAR_BUTTON = R.drawable.close;
 
@@ -57,17 +57,17 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     /* Constructors */
 
-    public EmailCompleteTextViewPlus(Context context) {
+    public EmailAutoCompleteTextView(Context context) {
         super(context);
         init(context);
     }
 
-    public EmailCompleteTextViewPlus(Context context, AttributeSet attrs) {
+    public EmailAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public EmailCompleteTextViewPlus(Context context, AttributeSet attrs, int defStyle) {
+    public EmailAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -151,7 +151,7 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     @Override public void onFocusChange(View v, boolean hasFocus) {
 
-        final EmailCompleteTextViewPlus editText = (EmailCompleteTextViewPlus) v;
+        final EmailAutoCompleteTextView editText = (EmailAutoCompleteTextView) v;
         editText.setClearVisible((hasFocus && !TextUtils.isEmpty(editText.getText().toString())));
 
         if (mOnFocusChangeListener != null) {
@@ -181,9 +181,9 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     public static final class DefaultOnButtonClickListener implements OnClearClicked {
 
-        private final EmailCompleteTextViewPlus editTextPlus;
+        private final EmailAutoCompleteTextView editTextPlus;
 
-        public DefaultOnButtonClickListener(EmailCompleteTextViewPlus editTextPlus) {
+        public DefaultOnButtonClickListener(EmailAutoCompleteTextView editTextPlus) {
             this.editTextPlus = editTextPlus;
         }
 
@@ -194,9 +194,9 @@ public class EmailCompleteTextViewPlus extends AutoCompleteTextView implements
 
     public static final class DefaultTextChangedListener implements TextWatcher {
 
-        private final EmailCompleteTextViewPlus editTextPlus;
+        private final EmailAutoCompleteTextView editTextPlus;
 
-        public DefaultTextChangedListener(EmailCompleteTextViewPlus editTextPlus) {
+        public DefaultTextChangedListener(EmailAutoCompleteTextView editTextPlus) {
             this.editTextPlus = editTextPlus;
         }
 
