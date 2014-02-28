@@ -27,6 +27,6 @@ Add the following to your `build.gradle`:
 	}
 ```
 
-[1]: https://raw.github.com/greenhalolabs/EmailAutoCompleteTextView/master/images/emailautocompletetextview_screenshot.png
+[1]: https://raw.github.com/greenhalolabs/EmailAutoCompleteTextView/master/images/EmailAutoCompleteTextView_demo.gif
 [2]: http://developer.android.com/reference/android/accounts/AccountManager.html
 [3]: https://github.com/greenhalolabs/EmailAutoCompleteTextView/tree/master/example
