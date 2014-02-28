@@ -145,6 +145,7 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
                                                                       emailsList);
         setAdapter(adapter);
         setClearVisible(false);
+        setSelectAllOnFocus(true);
     }
 
     /* Implemented Methods */
