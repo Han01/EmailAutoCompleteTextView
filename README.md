@@ -14,7 +14,7 @@ EmailAutoCompleteTextView is simple to integrate in your project. Simply downloa
 Please view the sample application under [example/][3] for more details.
 
 
-### Including EmailAutoCompleteTextView using Gradle:
+## Including EmailAutoCompleteTextView using Gradle:
 
 Add the following to your `build.gradle`:
 
@@ -26,6 +26,32 @@ Add the following to your `build.gradle`:
 		'com.greenhalolabs.emailautocompletetextview:library:1.0.1-SNAPSHOT'
 	}
 ```
+
+## Usage:
+
+In XML:
+
+```
+    <com.greenhalolabs.emailautocompletetextview.EmailAutoCompleteTextView
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_an_email"
+        android:layout_alignParentTop="true"
+        app:clearButtonDrawable="@drawable/close" />
+```
+
+Programmatically:
+
+```
+        EmailAutoCompleteTextView emailAutoCompleteTextView = new EmailAutoCompleteTextView(context);
+        emailAutoCompleteTextView.setHint(R.string.enter_an_email);
+        emailAutoCompleteTextView.setClearButtonEnabled(true); // defaults to true
+        emailAutoCompleteTextView.setClearButtonResId(R.drawable.close);
+
+```
+
 
 [1]: https://raw.github.com/greenhalolabs/EmailAutoCompleteTextView/master/images/EmailAutoCompleteTextView_demo.gif
 [2]: http://developer.android.com/reference/android/accounts/AccountManager.html

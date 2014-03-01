@@ -55,11 +55,15 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
     private OnTouchListener mOnTouchListener;
     private OnFocusChangeListener mOnFocusChangeListener;
     private OnClearClicked mOnClearClickListener;
+    private int mClearButtonResId = DEFAULT_CLEAR_BUTTON;
+    private boolean mClearButtonEnabled = true;
+    private DefaultTextChangedListener mDefaultTextChangeListener;
 
     /* Constructors */
 
     public EmailAutoCompleteTextView(Context context) {
         super(context);
+        init(context, null, 0);
     }
 
     public EmailAutoCompleteTextView(Context context, AttributeSet attrs) {
@@ -92,17 +96,20 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
     }
 
     /**
-     * Sets the visibility of the clear button.
-     * 
+     * Sets the visibility of the clear button. The clear button must also be enabled for it to be visible.
+     *
+     * @see {@link #setClearButtonEnabled(boolean)}
      * @param visible true if the clear button should be visible, otherwise, false.
      */
     public void setClearVisible(boolean visible) {
-        final Drawable d = (visible ? mTappableDrawable : null);
-        final Drawable[] drawables = getCompoundDrawables();
-        if (drawables != null) {
-            setCompoundDrawables(drawables[0], drawables[1], d, drawables[3]);
-        } else {
-            Log.w(TAG, "No button is available. Attach one by setting android:drawableRight.");
+        if (mClearButtonEnabled) {
+            final Drawable d = (visible ? mTappableDrawable : null);
+            final Drawable[] drawables = getCompoundDrawables();
+            if (drawables != null) {
+                setCompoundDrawables(drawables[0], drawables[1], d, drawables[3]);
+            } else {
+                Log.w(TAG, "No clear button is available.");
+            }
         }
     }
 
@@ -114,39 +121,70 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
         return (drawables != null && drawables[2] != null);
     }
 
+    /**
+     * @return true if the clear button is enabled, otherwise, false.
+     */
+    public boolean isClearButtonEnabled() {
+        return mClearButtonEnabled;
+    }
+
+    /**
+     * Sets if the clear button should be enabled or not (default is true).
+     *
+     * @param enabled true if it should be enabled, false otherwise.
+     */
+    public void setClearButtonEnabled(boolean enabled) {
+        mClearButtonEnabled = enabled;
+        initClearButton();
+    }
+
+    /**
+     * Sets the clear button drawable (the clear button must be enabled).
+     *
+     * @see {@link #setClearButtonEnabled(boolean)}
+     * @param resId the drawable resource ID.
+     */
+    public void setClearButtonResId(int resId) {
+        mClearButtonResId = resId;
+        initClearButton();
+    }
+
     /* Private Methods */
 
-    private void init(Context context, AttributeSet attrs, int defStyle) {
-
-        final TypedArray a = context.obtainStyledAttributes(attrs,
-                                                            R.styleable.EmailAutoCompleteTextView,
-                                                            defStyle,
-                                                            0);
-
-        final boolean isClearButtonEnabled = a.getBoolean(R.styleable.EmailAutoCompleteTextView_setClearButtonEnabled,
-                                                          true);
-        final int clearButtonRes = a.getResourceId(R.styleable.EmailAutoCompleteTextView_clearButtonDrawable,
-                                                   DEFAULT_CLEAR_BUTTON);
-
-        a.recycle();
-
-        // Initialize clear button
-        if (isClearButtonEnabled) {
+    private void initClearButton() {
+        if (mClearButtonEnabled) {
             final Drawable[] drawables = getCompoundDrawables();
             mTappableDrawable = ((drawables != null && drawables[2] != null)
                     ? drawables[2]
-                    : context.getResources().getDrawable(clearButtonRes));
+                    : getContext().getResources().getDrawable(mClearButtonResId));
             if (mTappableDrawable != null) {
                 mTappableDrawable.setBounds(0,
-                                            0,
-                                            mTappableDrawable.getIntrinsicWidth(),
-                                            mTappableDrawable.getIntrinsicHeight());
-                addTextChangedListener(new DefaultTextChangedListener(this));
-                setOnClearClickListener(new DefaultOnButtonClickListener(this));
-                super.setOnFocusChangeListener(this);
-                super.setOnTouchListener(this);
+                        0,
+                        mTappableDrawable.getIntrinsicWidth(),
+                        mTappableDrawable.getIntrinsicHeight());
+                setOnClearClickListener(new DefaultClearButtonClickListener(this));
             }
         }
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+
+        if (attrs != null) {
+            final TypedArray a = context.obtainStyledAttributes(attrs,
+                                                                R.styleable.EmailAutoCompleteTextView,
+                                                                defStyle,
+                                                                0);
+
+            mClearButtonEnabled = a.getBoolean(R.styleable.EmailAutoCompleteTextView_setClearButtonEnabled,
+                                               true);
+            mClearButtonResId = a.getResourceId(R.styleable.EmailAutoCompleteTextView_clearButtonDrawable,
+                                                DEFAULT_CLEAR_BUTTON);
+
+            a.recycle();
+        }
+
+        // Initialize clear button
+        initClearButton();
 
         // Get e-mails
         final List<String> emailsList = AccountUtil.getAccountEmails(context);
@@ -156,6 +194,9 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
         setAdapter(adapter);
         setClearVisible(false);
         setSelectAllOnFocus(true);
+        super.setOnFocusChangeListener(this);
+        super.setOnTouchListener(this);
+        addTextChangedListener(new DefaultTextChangedListener(this));
     }
 
     /* Implemented Methods */
@@ -163,7 +204,9 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
     @Override public void onFocusChange(View v, boolean hasFocus) {
 
         final EmailAutoCompleteTextView editText = (EmailAutoCompleteTextView) v;
-        editText.setClearVisible((hasFocus && !TextUtils.isEmpty(editText.getText().toString())));
+        if (mClearButtonEnabled) {
+            editText.setClearVisible((hasFocus && !TextUtils.isEmpty(editText.getText().toString())));
+        }
 
         if (mOnFocusChangeListener != null) {
             mOnFocusChangeListener.onFocusChange(v, hasFocus);
@@ -176,7 +219,7 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
             final boolean tappedButton = event.getX() > (getWidth() - getPaddingRight() - mTappableDrawable.getIntrinsicWidth());
             if (tappedButton) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (mOnClearClickListener != null) {
+                    if (mClearButtonEnabled && mOnClearClickListener != null) {
                         mOnClearClickListener.onClick();
                     }
                 }
@@ -190,11 +233,11 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
 
     /* Inner Classes */
 
-    public static final class DefaultOnButtonClickListener implements OnClearClicked {
+    public static final class DefaultClearButtonClickListener implements OnClearClicked {
 
         private final EmailAutoCompleteTextView editTextPlus;
 
-        public DefaultOnButtonClickListener(EmailAutoCompleteTextView editTextPlus) {
+        public DefaultClearButtonClickListener(EmailAutoCompleteTextView editTextPlus) {
             this.editTextPlus = editTextPlus;
         }
 
@@ -215,8 +258,10 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
         }
 
         @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-            editTextPlus.setClearVisible(editTextPlus.hasFocus() && !TextUtils.isEmpty(editTextPlus.getText()
-                                                                                                   .toString()));
+            if (editTextPlus.isClearButtonEnabled()) {
+                editTextPlus.setClearVisible(editTextPlus.hasFocus() && !TextUtils.isEmpty(editTextPlus.getText()
+                        .toString()));
+            }
         }
 
         @Override public void afterTextChanged(Editable s) {
