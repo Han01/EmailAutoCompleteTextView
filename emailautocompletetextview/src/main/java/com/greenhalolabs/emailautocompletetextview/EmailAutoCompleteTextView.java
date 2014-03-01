@@ -116,10 +116,6 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
 
     /* Private Methods */
 
-    private Drawable getDefaultClearButton(Context context) {
-        return context.getResources().getDrawable(DEFAULT_CLEAR_BUTTON);
-    }
-
     private void init(Context context, AttributeSet attrs, int defStyle) {
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
@@ -129,6 +125,8 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
 
         final boolean isClearButtonEnabled = a.getBoolean(R.styleable.EmailAutoCompleteTextView_setClearButtonEnabled,
                                                           true);
+        final int clearButtonRes = a.getResourceId(R.styleable.EmailAutoCompleteTextView_clearButtonDrawable,
+                                                   DEFAULT_CLEAR_BUTTON);
 
         a.recycle();
 
@@ -137,7 +135,7 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
             final Drawable[] drawables = getCompoundDrawables();
             mTappableDrawable = ((drawables != null && drawables[2] != null)
                     ? drawables[2]
-                    : getDefaultClearButton(context));
+                    : context.getResources().getDrawable(clearButtonRes));
             if (mTappableDrawable != null) {
                 mTappableDrawable.setBounds(0,
                                             0,
