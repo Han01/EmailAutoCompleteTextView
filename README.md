@@ -5,7 +5,7 @@ EmailAutoCompleteTextView inherits from [AutoCompleteTextView][4] and uses the u
 
 ![EmailAutoCompleteTextView Screenshot][1]
 
-EmailAutoCompleteTextView is simple to integrate in your project. Simply download and include in your project via XML or programmatically. **NOTE**: since this view uses [AccountManager][2] to get the e-mails on the device, you must include the following in your `AndroidManifest.xml`:
+**NOTE**: since this view uses [AccountManager][2] to get the e-mails on the device, you must include the following in your `AndroidManifest.xml`:
 
 ```
   <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
@@ -29,7 +29,7 @@ Add the following to your `build.gradle`:
 
 ## Usage:
 
-In XML:
+### In XML:
 
 ```
 <com.greenhalolabs.emailautocompletetextview.EmailAutoCompleteTextView
@@ -42,7 +42,7 @@ In XML:
     app:clearButtonDrawable="@drawable/close" />
 ```
 
-Programmatically:
+### Programmatically:
 
 ```
 EmailAutoCompleteTextView emailAutoCompleteTextView = new EmailAutoCompleteTextView(context);
@@ -51,7 +51,7 @@ emailAutoCompleteTextView.setClearButtonEnabled(true); // defaults to true
 emailAutoCompleteTextView.setClearButtonResId(R.drawable.close);
 ```
 
-Styling:
+### Styling:
 
 Since EmailAutoCompleteTextView inherits from [AutoCompleteTextView][4], styling is similar to styling an AutoCompleteTextView. The drop down item layout used is `android.R.layout.simple_dropdown_item_1line`, to provide a custom styling for this, add the following to your application theme: 
 
