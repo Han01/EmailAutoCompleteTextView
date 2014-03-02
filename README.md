@@ -20,10 +20,10 @@ Add the following to your `build.gradle`:
 
 ```
 	repositories {
-    	maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    	mavenCentral()
 	}
 	dependencies {
-		'com.greenhalolabs.emailautocompletetextview:library:1.0.1-SNAPSHOT'
+		'com.greenhalolabs.emailautocompletetextview:library:1.1.0'
 	}
 ```
 
