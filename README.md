@@ -38,7 +38,6 @@ Add the following to your `build.gradle`:
     android:layout_height="wrap_content"
     android:dropDownSelector="@drawable/some_drawable"
     android:hint="@string/enter_an_email"
-    android:layout_alignParentTop="true"
     app:clearButtonDrawable="@drawable/close" />
 ```
 
