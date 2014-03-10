@@ -21,6 +21,8 @@ import android.util.Patterns;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,26 +35,29 @@ public class AccountUtil {
      */
     public static List<String> getAccountEmails(Context context) {
         
-        final List<String> emailList = new ArrayList<String>();
+        final Set<String> emailSet = new HashSet<String>();
         final Account[] accounts = AccountManager.get(context).getAccounts();
 
         for (Account account : accounts) {
-            if (isEmail(account.name) && !emailList.contains(account.name)) {
-                emailList.add(account.name);
+            if (isEmail(account.name)) {
+              emailSet.add(account.name);
             }
         }
 
-        return emailList;
+        return new ArrayList<String>(emailSet);
     }
 
-    private static boolean isEmail(String email) {
+    /**
+     * Returns true if the given string is an email.
+     */
+    private static boolean isEmail(String account) {
 
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(account)) {
             return false;
         }
 
         final Pattern emailPattern = Patterns.EMAIL_ADDRESS;
-        final Matcher matcher = emailPattern.matcher(email);
+        final Matcher matcher = emailPattern.matcher(account);
         return matcher.matches();
     }
 

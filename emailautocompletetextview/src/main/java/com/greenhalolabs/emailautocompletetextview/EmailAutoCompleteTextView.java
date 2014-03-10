@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -194,6 +195,7 @@ public class EmailAutoCompleteTextView extends AutoCompleteTextView implements
         setAdapter(adapter);
         setClearVisible(false);
         setSelectAllOnFocus(true);
+        setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         super.setOnFocusChangeListener(this);
         super.setOnTouchListener(this);
         addTextChangedListener(new DefaultTextChangedListener(this));
