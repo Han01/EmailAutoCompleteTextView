@@ -33,12 +33,13 @@ Add the following to your `build.gradle`:
 
 ```
 <com.greenhalolabs.emailautocompletetextview.EmailAutoCompleteTextView
-	xmlns:android="http://schemas.android.com/apk/res/android" 	xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:dropDownSelector="@drawable/some_drawable"
     android:hint="@string/enter_an_email"
-    android:layout_alignParentTop="true"
+    android:imeActionLabel="@string/sign_up"
     app:clearButtonDrawable="@drawable/close" />
 ```
 
