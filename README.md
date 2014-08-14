@@ -23,7 +23,7 @@ Add the following to your `build.gradle`:
     	mavenCentral()
 	}
 	dependencies {
-		compile 'com.greenhalolabs:emailautocompletetextview:1.3.0'
+		compile 'com.greenhalolabs:emailautocompletetextview:1.3.1'
 	}
 ```
 
